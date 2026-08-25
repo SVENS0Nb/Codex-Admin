@@ -1,0 +1,64 @@
+{
+  "schema_version": 2,
+  "repository_root": "C:\\Codex-Admin",
+  "backup_root": "%LOCALAPPDATA%\\CodexAdmin\\control-plane\\backups",
+  "components": [
+    {
+      "id": "repository",
+      "source": "C:\\Codex-Admin",
+      "backup_method": "git_bundle",
+      "contains_secrets": false,
+      "restore_order": 1
+    },
+    {
+      "id": "knowledge_database",
+      "source": "%LOCALAPPDATA%\\CodexAdmin\\homelab\\homelab-ops.sqlite3",
+      "backup_method": "sqlite_online_backup",
+      "contains_secrets": false,
+      "restore_order": 2
+    },
+    {
+      "id": "job_engine_database",
+      "source": "%LOCALAPPDATA%\\CodexAdmin\\job-engine\\jobs.sqlite3",
+      "backup_method": "sqlite_online_backup",
+      "contains_secrets": false,
+      "restore_order": 3
+    },
+    {
+      "id": "homelab_skill",
+      "source": "%USERPROFILE%\\.codex\\skills\\homelab-admin",
+      "backup_method": "file_copy",
+      "contains_secrets": false,
+      "restore_order": 4
+    },
+    {
+      "id": "global_agent_policy",
+      "source": "%USERPROFILE%\\.codex\\AGENTS.md",
+      "backup_method": "file_copy",
+      "contains_secrets": false,
+      "restore_order": 5
+    },
+    {
+      "id": "codex_mcp_configuration",
+      "source": "%USERPROFILE%\\.codex\\config.toml",
+      "backup_method": "section_allowlist_export",
+      "contains_secrets": false,
+      "restore_order": 6
+    },
+    {
+      "id": "encrypted_secret_vault",
+      "source": "%LOCALAPPDATA%\\CodexAdmin\\secret-ui",
+      "backup_method": "optional_encrypted_file_copy",
+      "contains_secrets": true,
+      "restore_order": 7,
+      "requires_explicit_switch": true,
+      "restore_requires_same_windows_identity": true
+    }
+  ],
+  "recovery_limitations": [
+    "The default backup root is local and remains in the same failure domain until the operator copies it through a separately approved encrypted process.",
+    "Encrypted secret-vault copies require the same Windows user identity and DPAPI context.",
+    "Recovery points are never deleted automatically.",
+    "Codex skill, global policy, and MCP configuration are restore-tested only in an isolated temporary directory."
+  ]
+}

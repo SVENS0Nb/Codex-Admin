@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "repository_name": "Codex-Admin",
+  "site_neutral": true,
+  "allowed_example_ipv4_ranges": [
+    "192.0.2.0/24",
+    "198.51.100.0/24",
+    "203.0.113.0/24"
+  ],
+  "allowed_example_domain_suffixes": [
+    ".example.invalid"
+  ],
+  "forbidden_tracked_paths": [
+    "artifacts/",
+    ".site/",
+    "reports/",
+    "database/backups/"
+  ],
+  "runtime_only_roots": [
+    "%LOCALAPPDATA%\\CodexAdmin\\site",
+    "%LOCALAPPDATA%\\CodexAdmin\\homelab",
+    "%LOCALAPPDATA%\\CodexAdmin\\job-engine",
+    "%LOCALAPPDATA%\\CodexAdmin\\secret-ui"
+  ]
+}

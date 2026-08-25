@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "last_verified_at": "2026-08-26T00:00:00+02:00",
+  "components": [
+    {
+      "id": "homelab_admin_mcp",
+      "version": "0.4.0",
+      "manifest": "mcp/homelab-admin/package.json",
+      "health_contract": "context_bootstrap and integrity_report",
+      "database_schema_version": 4
+    },
+    {
+      "id": "homelab_job_engine",
+      "version": "1.8.0",
+      "manifest": "apps/job-engine/package.json",
+      "health_contract": "http://127.0.0.1:8770/healthz"
+    },
+    {
+      "id": "homelab_secret_ui",
+      "version": "1.0.0",
+      "manifest": "apps/secret-ui/package.json",
+      "health_contract": "http://127.0.0.1:8765/healthz"
+    },
+    {
+      "id": "unifi_security_log",
+      "version": "1.0.0",
+      "manifest": "apps/unifi-security-log/package.json",
+      "health_contract": "SQLite integrity and collector status"
+    },
+    {
+      "id": "daily_log_review",
+      "version": "2.1.0",
+      "manifest": "config/daily-log-review.json",
+      "health_contract": "latest.manifest.json payload and artifact hashes"
+    }
+  ],
+  "runtimes": {
+    "node": {
+      "supported": ">=24 <25",
+      "verified_version": "24.19.0"
+    },
+    "npm": {
+      "verified_version": "11.17.0"
+    },
+    "powershell": {
+      "supported": ">=7.4",
+      "verified_version": "7.6.4"
+    },
+    "python": {
+      "supported": ">=3.12 <3.15",
+      "verified_version": "3.14.7"
+    },
+    "paramiko": {
+      "verified_version": "5.0.0"
+    },
+    "pester": {
+      "supported": ">=5.7 <6",
+      "verified_version": "5.7.1"
+    }
+  }
+}

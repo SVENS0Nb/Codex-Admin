@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "default_mode": "read_then_change_then_verify",
+  "access_preference": [
+    "api",
+    "ssh_or_powershell",
+    "chrome",
+    "computer_use"
+  ],
+  "autonomous": [
+    "inventory",
+    "health_checks",
+    "logs_and_metrics",
+    "configuration_reads",
+    "certificate_inspection",
+    "reachability_tests",
+    "secret_free_knowledge_database_maintenance",
+    "local_workspace_maintenance"
+  ],
+  "confirmation_required": [
+    "destructive_delete_or_overwrite",
+    "backup_or_snapshot_delete",
+    "factory_reset",
+    "cluster_or_quorum_change",
+    "gateway_or_management_ip_change",
+    "vlan_trunk_or_firewall_control_path_change",
+    "dns_authority_or_remote_access_change",
+    "any_change_that_could_reduce_user_reachability_temporarily_or_permanently",
+    "credential_mfa_permission_or_secret_store_change",
+    "monitoring_finding_repair_or_remediation",
+    "physical_security_actuator"
+  ],
+  "standalone_confirmation": {
+    "reachability_reduction": {
+      "scope": "all_systems",
+      "required_immediately_before_action": true,
+      "fail_closed_when_uncertain": true,
+      "cannot_be_inferred_from_broad_or_prior_approval": true,
+      "unattended_execution_allowed": false,
+      "new_confirmation_required_if_proposal_changes": true,
+      "explanation_required": [
+        "verified_current_access",
+        "exact_post_change_access",
+        "affected_users_clients_networks_services_protocols",
+        "reason",
+        "expected_interruption_and_lockout_risk",
+        "access_preserving_alternatives",
+        "verified_rollback_or_recovery_path"
+      ]
+    }
+  },
+  "secret_store": "windows_dpapi_current_user",
+  "knowledge_database": "%LOCALAPPDATA%\\CodexAdmin\\homelab\\homelab-ops.sqlite3",
+  "context_bootstrap": "homelab_admin.context_bootstrap",
+  "change_log": "CHANGELOG.md"
+}

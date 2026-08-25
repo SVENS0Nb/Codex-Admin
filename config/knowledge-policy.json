@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "database": {
+    "engine": "sqlite",
+    "location": "%LOCALAPPDATA%\\CodexAdmin\\homelab\\homelab-ops.sqlite3",
+    "journal_mode": "WAL",
+    "contains_secrets": false,
+    "secret_store": "windows_dpapi_current_user"
+  },
+  "source_precedence": [
+    "current_verified_live_state",
+    "structured_inventory_and_verified_database_records",
+    "versioned_runbooks_and_change_history",
+    "local_codex_memory",
+    "chat_recollection_or_inference"
+  ],
+  "required_fields": [
+    "source",
+    "observed_at",
+    "confidence"
+  ],
+  "default_validity_hours": {
+    "reachability": 24,
+    "access_test": 168,
+    "service_version": 168,
+    "certificate": 168,
+    "topology": 720,
+    "stable_identifier": 8760
+  },
+  "write_rules": [
+    "Never store passwords, tokens, private keys, OTP values, recovery codes, cookies, or authorization headers.",
+    "Store only DPAPI vault record identifiers in credential_ref fields.",
+    "Record stable claims as facts and time-bound checks as observations.",
+    "Do not silently replace conflicting facts; mark the old fact superseded or disputed and preserve provenance.",
+    "Record a productive infrastructure change only after verification, including rollback state.",
+    "Search prior incidents, changes, decisions, and runbooks before diagnosing a recurring problem.",
+    "Record a diagnosed problem as an incident and preserve its symptoms, root cause, remediation, prevention, and lifecycle events without secrets.",
+    "Reverify stale or low-confidence data before using it for a consequential change.",
+    "Update versioned inventory or runbooks when they are the authoritative source, then synchronize the database."
+  ],
+  "maintenance": {
+    "daily_repository_sync": true,
+    "daily_tcp_observations": true,
+    "daily_integrity_check": true,
+    "daily_backup": true,
+    "backup_retention_target": 30,
+    "automatic_backup_deletion": false,
+    "backup_deletion_requires_confirmation": true
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-01-01T00:00:00Z",
+  "dependencies": [
+    {"id":"ha-on-proxmox","from_system_id":"home_assistant","to_system_id":"proxmox","relationship":"hosted_on","confidence":1,"notes":"Synthetic example"},
+    {"id":"proxy-on-proxmox","from_system_id":"reverse_proxy","to_system_id":"proxmox","relationship":"hosted_on","confidence":1,"notes":"Synthetic example"},
+    {"id":"public-ingress-proxy","from_system_id":"public_relay_vps","to_system_id":"reverse_proxy","relationship":"forwards_to","confidence":1,"notes":"Synthetic example"}
+  ]
+}

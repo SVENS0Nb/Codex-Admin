@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="csrf-token" content="__CSRF_TOKEN__">
+  <meta name="service-mode" content="__SERVICE_MODE__">
+  <title>Codex Admin Vault</title>
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><span></span></span>
+      <div>
+        <p class="eyebrow">Homelab Operations</p>
+        <h1>Codex Admin Vault</h1>
+      </div>
+    </div>
+    <div class="session">
+      <span class="status-dot" aria-hidden="true"></span>
+      <div>
+        <strong>Nur dieser PC</strong>
+        <span id="identity">__WINDOWS_USER__ · Windows DPAPI</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="intake-panel" aria-labelledby="intake-title">
+      <div class="panel-heading">
+        <div>
+          <p id="intake-kicker" class="step-label">Neuer Eintrag</p>
+          <h2 id="intake-title">Zugang sicher hinterlegen</h2>
+        </div>
+        <span class="lock-badge">Verschlüsselt</span>
+      </div>
+
+      <form id="secret-form" autocomplete="off">
+        <div class="field">
+          <label for="system">System</label>
+          <input id="system" name="system" list="system-options" maxlength="80" placeholder="z. B. Proxmox" required>
+          <datalist id="system-options"></datalist>
+        </div>
+
+        <div class="field">
+          <label for="internal-endpoint">Interne Verbindung <span>optional, verschlüsselt</span></label>
+          <input id="internal-endpoint" name="internalEndpoint" maxlength="512" autocomplete="url" spellcheck="false" placeholder="z. B. https://192.0.2.60:8006">
+          <p class="field-help">Lokale IP, Hostname oder vollständige URL im internen Netz.</p>
+        </div>
+
+        <div class="field">
+          <label for="external-endpoint">Externe Verbindung <span>optional, verschlüsselt</span></label>
+          <input id="external-endpoint" name="externalEndpoint" maxlength="512" autocomplete="url" spellcheck="false" placeholder="z. B. https://proxmox.example.de">
+          <p class="field-help">Externe URL, VPN-Adresse oder öffentlicher Hostname.</p>
+        </div>
+
+        <div class="field">
+          <label for="label">Bezeichnung</label>
+          <input id="label" name="label" maxlength="80" placeholder="z. B. Root-Administrator" required>
+        </div>
+
+        <div class="field">
+          <label for="username">Benutzer / Client-ID <span>optional</span></label>
+          <input id="username" name="username" maxlength="160" autocomplete="off" placeholder="root@pam">
+        </div>
+
+        <fieldset class="type-field">
+          <legend>Art des Geheimnisses</legend>
+          <div class="type-grid">
+            <label>
+              <input type="radio" name="type" value="password" checked>
+              <span><b>Passwort</b><small>Login und Konten</small></span>
+            </label>
+            <label>
+              <input type="radio" name="type" value="api_key">
+              <span><b>API-Key</b><small>Token und Schlüssel</small></span>
+            </label>
+            <label>
+              <input type="radio" name="type" value="totp">
+              <span><b>TOTP</b><small>2FA-Seed oder URI</small></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <div class="field-label-row">
+            <label for="secret">Geheimwert</label>
+            <label class="visibility-toggle">
+              <input id="show-secret" type="checkbox">
+              <span>Eingabe anzeigen</span>
+            </label>
+          </div>
+          <input id="secret" name="secret" type="password" maxlength="16384" autocomplete="new-password" spellcheck="false" placeholder="Wert einfügen" required>
+          <p id="secret-help" class="field-help">Der Wert wird nach dem Speichern nicht mehr angezeigt.</p>
+        </div>
+
+        <div class="field">
+          <label for="notes">Hinweis <span>optional, verschlüsselt</span></label>
+          <textarea id="notes" name="notes" maxlength="500" rows="3" placeholder="Verwendungszweck oder Besonderheiten"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button id="form-submit" class="primary-action" type="submit">
+            <span id="submit-icon" class="button-icon" aria-hidden="true">+</span>
+            <span id="submit-label">Sicher speichern</span>
+          </button>
+          <button id="cancel-edit" class="secondary-action form-cancel" type="button" hidden>Abbrechen</button>
+        </div>
+        <p class="privacy-note">Keine Cloud · kein Browser-Speicher · keine Klartextdatei</p>
+      </form>
+    </section>
+
+    <section class="vault-panel" aria-labelledby="vault-title">
+      <div class="vault-heading">
+        <div>
+          <p class="step-label">Lokaler Bestand</p>
+          <h2 id="vault-title">Systemzugänge</h2>
+        </div>
+        <div class="vault-count"><strong id="record-count">0</strong><span>Einträge</span></div>
+      </div>
+
+      <div class="toolbar">
+        <label class="search">
+          <span aria-hidden="true"></span>
+          <input id="search" type="search" placeholder="System, Adresse, Benutzer oder Bezeichnung suchen" autocomplete="off">
+        </label>
+        <select id="type-filter" aria-label="Nach Geheimnistyp filtern">
+          <option value="all">Alle Typen</option>
+          <option value="password">Passwörter</option>
+          <option value="api_key">API-Keys</option>
+          <option value="totp">TOTP</option>
+        </select>
+      </div>
+
+      <div id="empty-state" class="empty-state">
+        <div class="empty-mark" aria-hidden="true"></div>
+        <h3>Noch keine Zugänge hinterlegt</h3>
+        <p>Lege links den ersten verschlüsselten Eintrag an.</p>
+      </div>
+
+      <div id="records" class="records" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Gebunden an 127.0.0.1</span>
+    <span>Zwischenablage löscht sich nach 30 Sekunden</span>
+    <button id="shutdown" type="button">Lokalen Dienst beenden</button>
+  </footer>
+
+  <dialog id="delete-dialog">
+    <form method="dialog">
+      <p class="dialog-kicker">Eintrag entfernen</p>
+      <h2 id="delete-title">Zugang wirklich löschen?</h2>
+      <p>Der verschlüsselte Datensatz wird dauerhaft von diesem PC entfernt.</p>
+      <div class="dialog-actions">
+        <button value="cancel" class="secondary-action">Abbrechen</button>
+        <button id="confirm-delete" value="confirm" class="danger-action">Endgültig löschen</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="offline" class="offline" hidden>
+    <div>
+      <span class="offline-mark" aria-hidden="true"></span>
+      <h2>Lokaler Dienst beendet</h2>
+      <p>Du kannst dieses Browserfenster jetzt schließen.</p>
+    </div>
+  </div>
+</body>
+</html>

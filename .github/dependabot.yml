@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /mcp/homelab-admin
+    schedule: { interval: weekly }
+  - package-ecosystem: npm
+    directory: /apps/job-engine
+    schedule: { interval: weekly }
+  - package-ecosystem: npm
+    directory: /apps/secret-ui
+    schedule: { interval: weekly }
+  - package-ecosystem: npm
+    directory: /apps/unifi-security-log
+    schedule: { interval: weekly }
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly }

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-01-01T00:00:00Z",
+  "systems": [
+    {"id":"admin_workstation","name":"Codex Admin VM","kind":"virtual_machine","location":"management_network","parent_system_id":null,"stable_identifier":"CODEX-ADMIN","criticality":"critical","lifecycle":"active","confidence":1,"notes":"Synthetic example"},
+    {"id":"proxmox","name":"Example Hypervisor","kind":"hypervisor","location":"management_network","parent_system_id":null,"stable_identifier":"example-hypervisor","criticality":"critical","lifecycle":"active","confidence":1,"notes":"Synthetic example"},
+    {"id":"home_assistant","name":"Example Home Automation","kind":"virtual_machine","location":"management_network","parent_system_id":"proxmox","stable_identifier":"example-vm-201","criticality":"high","lifecycle":"active","confidence":1,"notes":"Synthetic example"},
+    {"id":"reverse_proxy","name":"Example Reverse Proxy","kind":"container","location":"management_network","parent_system_id":"proxmox","stable_identifier":"example-container-202","criticality":"high","lifecycle":"active","confidence":1,"notes":"Synthetic example"},
+    {"id":"unifi","name":"Example Network Gateway","kind":"gateway","location":"example_site","parent_system_id":null,"stable_identifier":"example-gateway","criticality":"critical","lifecycle":"active","confidence":1,"notes":"Synthetic example"},
+    {"id":"public_relay_vps","name":"Example Public Relay","kind":"virtual_private_server","location":"external_provider","parent_system_id":null,"stable_identifier":"example-relay","criticality":"high","lifecycle":"active","confidence":1,"notes":"Synthetic example"},
+    {"id":"qnap_nas","name":"Example NAS","kind":"network_storage","location":"management_network","parent_system_id":null,"stable_identifier":"example-nas","criticality":"high","lifecycle":"active","confidence":1,"notes":"Synthetic example"},
+    {"id":"game_server","name":"Example Game Server","kind":"virtual_machine","location":"management_network","parent_system_id":"proxmox","stable_identifier":"example-vm-301","criticality":"normal","lifecycle":"active","confidence":1,"notes":"Synthetic example"}
+  ]
+}

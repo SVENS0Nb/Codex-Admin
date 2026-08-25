@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="__CSRF_TOKEN__">
+  <title>Homelab Job Engine</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">CODEX ADMIN VM · NUR LOKAL</p>
+      <h1>Job Engine</h1>
+      <p class="subtitle">Cron-Jobs, einmalige Aufgaben und befristete Aktivtests zuverlässig planen, starten und prüfen.</p>
+    </div>
+    <div id="engine-status" class="status-pill">Verbinde …</div>
+  </header>
+
+  <main>
+    <section class="panel jobs-panel">
+      <div class="transient-section">
+        <div class="section-head compact">
+          <div>
+            <p class="eyebrow">DIAGNOSE</p>
+            <h2>Aktive Testskripte</h2>
+          </div>
+        </div>
+        <div id="active-tests" class="job-list compact-list"></div>
+        <p id="empty-active-tests" class="empty compact-empty">Keine aktiven Testskripte.</p>
+      </div>
+
+      <div class="transient-section">
+        <div class="section-head compact">
+          <div>
+            <p class="eyebrow">EINMALIG</p>
+            <h2>Geplante One-Time-Jobs</h2>
+          </div>
+        </div>
+        <div id="one-time-jobs" class="job-list compact-list"></div>
+        <p id="empty-one-time-jobs" class="empty compact-empty">Keine einmaligen Jobs geplant.</p>
+      </div>
+
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">ZEITPLÄNE</p>
+          <h2>Jobs</h2>
+        </div>
+        <button id="new-job" type="button" class="primary">Neuer Job</button>
+      </div>
+      <div id="notice" class="notice hidden" role="status"></div>
+      <div id="jobs" class="job-list"></div>
+      <p id="empty-jobs" class="empty hidden">Noch keine Jobs angelegt.</p>
+    </section>
+
+    <section class="panel runs-panel">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">AUDIT</p>
+          <h2>Letzte Ausführungen</h2>
+        </div>
+        <button id="refresh" type="button" class="ghost">Aktualisieren</button>
+      </div>
+      <div class="table-wrap runs-table">
+        <table>
+          <thead><tr><th>Job</th><th>Status</th><th>Start</th><th>Auslöser</th><th>Task</th><th>Code</th><th>Details</th></tr></thead>
+          <tbody id="runs"></tbody>
+        </table>
+      </div>
+      <p id="empty-runs" class="empty hidden">Noch keine Ausführungen vorhanden.</p>
+      <nav id="runs-pagination" class="pagination hidden" aria-label="Seiten der Ausführungshistorie">
+        <button id="runs-prev" type="button" class="ghost small">Neuere 100</button>
+        <span id="runs-page-info" aria-live="polite"></span>
+        <button id="runs-next" type="button" class="ghost small">Ältere 100</button>
+      </nav>
+    </section>
+  </main>
+
+  <dialog id="job-dialog">
+    <form id="job-form" method="dialog">
+      <div class="dialog-head">
+        <div><p class="eyebrow">JOBDEFINITION</p><h2 id="dialog-title">Neuer Job</h2></div>
+        <button type="button" id="close-dialog" class="icon" aria-label="Schließen">×</button>
+      </div>
+      <input type="hidden" id="job-id">
+      <div class="form-grid">
+        <label class="wide">Name<input id="name" maxlength="120" required placeholder="z. B. Arbeitsplatzbericht"></label>
+        <label class="wide">Beschreibung<textarea id="description" rows="2" maxlength="1000" placeholder="Zweck und erwartetes Ergebnis"></textarea></label>
+
+        <label>Cron-Ausdruck<input id="schedule" required value="0 * * * *" placeholder="0 18 * * *"></label>
+        <label>Zeitzone<input id="timezone" required value="Europe/Berlin"></label>
+        <p class="hint wide">Fünf Felder: Minute · Stunde · Tag · Monat · Wochentag. Beispiele: <code>*/15 * * * *</code>, <code>0 18 * * *</code>, <code>0 3 * * 1</code>.</p>
+
+        <label>Typ<select id="command-type"><option value="powershell">PowerShell-Skript</option><option value="executable">Programm</option></select></label>
+        <label class="wide">Absoluter Pfad<input id="command-path" required placeholder="C:\Codex-Admin\scripts\MeinJob.ps1"></label>
+        <label class="wide">Argumente, eines pro Zeile<textarea id="arguments" rows="4" placeholder="-Mode&#10;Report"></textarea></label>
+        <label class="wide">Arbeitsverzeichnis<input id="working-directory" placeholder="Wird sonst aus dem Skriptpfad übernommen"></label>
+
+        <label>Zeitlimit in Sekunden<input id="timeout" type="number" min="5" max="86400" value="900" required></label>
+        <label>Verpasster Termin<select id="misfire-policy"><option value="run_once">Einmal nachholen</option><option value="skip">Überspringen</option></select></label>
+
+        <label class="wide">Sicherheitsklasse<select id="safety-classification"><option value="manual_only">Nur manuell</option><option value="read_only">Nur lesend</option><option value="local_state_write">Nur lokale Statusdaten schreiben</option></select></label>
+        <label class="wide">Benötigte DPAPI-Datensatz-IDs, eine pro Zeile<textarea id="required-credential-refs" rows="2" placeholder="UUID des Vault-Datensatzes"></textarea></label>
+        <label class="wide">Benötigte TCP-Endpunkte, einer pro Zeile<textarea id="required-endpoints" rows="2" placeholder="host:port"></textarea></label>
+        <label class="wide">Erwartete Artefakte, ein absoluter Pfad pro Zeile<textarea id="expected-artifacts" rows="2" placeholder="C:\Pfad\report-{yyyy-MM-dd}.json"></textarea></label>
+
+        <label class="check wide"><input id="capture-output" type="checkbox"><span>Begrenzte Programmausgabe speichern <small>Standardmäßig aus, da Ausgaben Geheimnisse enthalten können.</small></span></label>
+        <label class="check wide warning"><input id="unattended" type="checkbox"><span>Unbeaufsichtigte Ausführung zulassen <small>Erfordert zusätzlich die Sicherheitsklasse „Nur lesend“ oder „Nur lokale Statusdaten schreiben“.</small></span></label>
+        <label class="check wide"><input id="enabled" type="checkbox"><span>Cron-Zeitplan aktivieren</span></label>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" id="cancel-dialog" class="ghost">Abbrechen</button>
+        <button type="submit" class="primary">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="log-dialog">
+    <div class="dialog-head">
+      <div><p class="eyebrow">LAUFDETAILS</p><h2>Ausgabe</h2></div>
+      <button type="button" id="close-log" class="icon" aria-label="Schließen">×</button>
+    </div>
+    <pre id="log-output"></pre>
+  </dialog>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-01-01T00:00:00Z",
+  "services": [
+    {"id":"proxmox-service","system_id":"proxmox","name":"Virtualization","product":"Proxmox VE","version":null,"desired_state":"running","observed_state":"unknown","management_interface_id":"proxmox:management","confidence":1,"notes":"Synthetic example"},
+    {"id":"home-automation-service","system_id":"home_assistant","name":"Home automation","product":"Home Assistant","version":null,"desired_state":"running","observed_state":"unknown","management_interface_id":"home_assistant:management","confidence":1,"notes":"Synthetic example"},
+    {"id":"reverse-proxy-service","system_id":"reverse_proxy","name":"Reverse proxy","product":"Nginx Proxy Manager","version":null,"desired_state":"running","observed_state":"unknown","management_interface_id":"reverse_proxy:management","confidence":1,"notes":"Synthetic example"},
+    {"id":"network-service","system_id":"unifi","name":"Network control","product":"UniFi Network","version":null,"desired_state":"running","observed_state":"unknown","management_interface_id":"unifi:management","confidence":1,"notes":"Synthetic example"}
+  ]
+}
