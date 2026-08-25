@@ -1,0 +1,34 @@
+{
+  "name": "homelab-admin-mcp",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "npm run check && npm run build && npm run dbtest && npm run smoke",
+    "build": "tsc",
+    "check": "tsc --noEmit",
+    "smoke": "node test/smoke.mjs",
+    "dbtest": "node test/database.mjs",
+    "start": "node build/index.js",
+    "db:init": "node build/cli.js init",
+    "db:sync": "node build/cli.js sync",
+    "db:context": "node build/cli.js context",
+    "db:search": "node build/cli.js search",
+    "db:incident-search": "node build/cli.js incident-search",
+    "db:integrity": "node build/cli.js integrity",
+    "db:backup": "node build/cli.js backup 30",
+    "db:check-endpoints": "node build/cli.js check-endpoints"
+  },
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.0.0",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.0.0",
+    "@types/node": "26.2.0",
+    "typescript": "7.0.2"
+  }
+}

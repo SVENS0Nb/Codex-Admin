@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "capabilities": [
+    {"id":"proxmox-read","system_id":"proxmox","name":"Read virtualization state","access_level":"read_only","access_profile_id":"proxmox-api-admin","last_tested_at":null,"test_result":"untested","evidence":"Synthetic example"},
+    {"id":"home-assistant-read","system_id":"home_assistant","name":"Read Home Assistant state","access_level":"read_only","access_profile_id":"home-assistant-api-admin","last_tested_at":null,"test_result":"untested","evidence":"Synthetic example"},
+    {"id":"unifi-log-read","system_id":"unifi","name":"Read sanitized security events","access_level":"read_only","access_profile_id":"unifi-console-ssh","last_tested_at":null,"test_result":"untested","evidence":"Synthetic example"}
+  ]
+}

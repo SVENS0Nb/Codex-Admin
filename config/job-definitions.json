@@ -1,0 +1,168 @@
+{
+  "schema_version": 2,
+  "managed_by": "scripts/Sync-HomelabRecurringJobs.ps1",
+  "jobs": [
+    {
+      "id": "home-assistant-availability",
+      "name": "Home Assistant availability (external/internal)",
+      "description": "Read-only external/internal availability correlation with sanitized local JSONL evidence.",
+      "schedule": "* * * * *",
+      "timezone": "Europe/Berlin",
+      "command_type": "powershell",
+      "command_path": "scripts/Invoke-HomeAssistantAvailabilityProbe.ps1",
+      "arguments": [],
+      "working_directory": ".",
+      "enabled": true,
+      "unattended": true,
+      "timeout_seconds": 60,
+      "overlap_policy": "skip",
+      "misfire_policy": "skip",
+      "capture_output": false,
+      "safety_classification": "local_state_write",
+      "required_access_profiles": [],
+      "required_endpoints": [],
+      "expected_artifacts": [
+        "%LOCALAPPDATA%\\CodexAdmin\\homelab\\availability\\home-assistant-availability-{yyyy-MM-dd}.jsonl"
+      ],
+      "dependency_paths": [
+        "scripts/Invoke-HomeAssistantAvailabilityProbe.ps1"
+      ],
+      "dependency_policy": "The monitored endpoints are evidence targets, not preflight dependencies; an outage must produce a probe record instead of blocking the probe."
+    },
+    {
+      "id": "homelab-daily-log-review",
+      "name": "Homelab daily log review",
+      "description": "Read-only registry-driven collection, sanitized analysis, reporting, and secret-free knowledge observations.",
+      "schedule": "0 18 * * *",
+      "timezone": "Europe/Berlin",
+      "command_type": "powershell",
+      "command_path": "scripts/Invoke-HomelabDailyLogReview.ps1",
+      "arguments": [],
+      "working_directory": ".",
+      "enabled": true,
+      "unattended": true,
+      "timeout_seconds": 3600,
+      "overlap_policy": "skip",
+      "misfire_policy": "run_once",
+      "capture_output": false,
+      "safety_classification": "local_state_write",
+      "required_access_profiles": [],
+      "required_endpoints": [],
+      "expected_artifacts": [
+        "%LOCALAPPDATA%\\CodexAdmin\\homelab\\reports\\latest.md",
+        "%LOCALAPPDATA%\\CodexAdmin\\homelab\\reports\\latest.html",
+        "%LOCALAPPDATA%\\CodexAdmin\\homelab\\reports\\latest.manifest.json",
+        "%LOCALAPPDATA%\\CodexAdmin\\homelab\\reports\\latest.manifest.sha256"
+      ],
+      "dependency_paths": [
+        "scripts/Invoke-HomelabDailyLogReview.ps1",
+        "scripts/Invoke-SshCommand.py",
+        "scripts/Get-QnapReadOnlyDiagnostics.ps1",
+        "scripts/Invoke-QnapRootCommand.ps1",
+        "scripts/Get-MinecraftGuestDiagnostics.ps1",
+        "apps/secret-ui/backend/SecretUiStore.ps1",
+        "mcp/homelab-admin/build/cli.js",
+        "mcp/homelab-admin/build/database.js",
+        "config/daily-log-review.json",
+        "config/daily-log-analysis.schema.json",
+        "config/job-definitions.json",
+        "prompts/daily-log-review.md",
+        "inventory/services.json",
+        "inventory/access-profiles.json",
+        "inventory/interfaces.json"
+      ],
+      "dependency_policy": "Collector credentials and endpoints are coverage subjects; partial failure must be reported in the manifest instead of suppressing the report."
+    },
+    {
+      "id": "unifi-security-event-archive",
+      "name": "UniFi security event archive",
+      "description": "Read-only strict-host-key pull of sanitized UniFi IDS/IPS metadata into the dedicated local SQLite archive.",
+      "schedule": "* * * * *",
+      "timezone": "Europe/Berlin",
+      "command_type": "powershell",
+      "command_path": "scripts/Sync-UniFiSecurityLog.ps1",
+      "arguments": [],
+      "working_directory": ".",
+      "enabled": true,
+      "unattended": true,
+      "timeout_seconds": 60,
+      "overlap_policy": "skip",
+      "misfire_policy": "run_once",
+      "capture_output": false,
+      "safety_classification": "local_state_write",
+      "required_access_profiles": [
+        "unifi-console-ssh"
+      ],
+      "required_endpoints": [
+        {
+          "host": "192.0.2.1",
+          "port": 22
+        }
+      ],
+      "expected_artifacts": [
+        "%LOCALAPPDATA%\\CodexAdmin\\homelab\\unifi-security\\unifi-security.sqlite3"
+      ],
+      "dependency_paths": [
+        "scripts/Sync-UniFiSecurityLog.ps1",
+        "apps/unifi-security-log/unifi-security-log.mjs",
+        "inventory/services.json",
+        "scripts/Invoke-SshCommand.py"
+      ],
+      "dependency_policy": "The pinned SSH access profile and controller endpoint are mandatory for a useful archive run."
+    },
+    {
+      "id": "weekly-control-plane-quality-gate",
+      "name": "Homelab control-plane quality gate",
+      "description": "Weekly local parser, test, integrity, version, and high-confidence repository-secret quality gate.",
+      "schedule": "0 4 * * 2",
+      "timezone": "Europe/Berlin",
+      "command_type": "powershell",
+      "command_path": "scripts/Invoke-HomelabScheduledQualityGate.ps1",
+      "arguments": [],
+      "working_directory": ".",
+      "enabled": true,
+      "unattended": true,
+      "timeout_seconds": 1800,
+      "overlap_policy": "skip",
+      "misfire_policy": "run_once",
+      "capture_output": false,
+      "safety_classification": "local_state_write",
+      "required_access_profiles": [],
+      "required_endpoints": [],
+      "expected_artifacts": [
+        "%LOCALAPPDATA%\\CodexAdmin\\homelab\\quality\\latest.json"
+      ],
+      "dependency_paths": [
+        "@repository-files"
+      ],
+      "dependency_policy": "All runtime and repository dependencies are checked by the quality script itself and summarized in the status artifact."
+    },
+    {
+      "id": "monthly-control-plane-recovery-point",
+      "name": "Homelab control-plane recovery point",
+      "description": "Monthly local Git and online-SQLite recovery point with restore verification and no automatic deletion.",
+      "schedule": "30 4 1 * *",
+      "timezone": "Europe/Berlin",
+      "command_type": "powershell",
+      "command_path": "scripts/Invoke-HomelabScheduledControlPlaneBackup.ps1",
+      "arguments": [],
+      "working_directory": ".",
+      "enabled": true,
+      "unattended": true,
+      "timeout_seconds": 1800,
+      "overlap_policy": "skip",
+      "misfire_policy": "run_once",
+      "capture_output": false,
+      "safety_classification": "local_state_write",
+      "required_access_profiles": [],
+      "required_endpoints": [],
+      "expected_artifacts": [
+        "%LOCALAPPDATA%\\CodexAdmin\\control-plane\\status\\latest.json"
+      ],
+      "dependency_paths": [
+        "@repository-files"
+      ],
+      "dependency_policy": "The backup script fails closed on a dirty repository, restore-tests every copy, and never deletes older recovery points."
+    }
+  ]
+}

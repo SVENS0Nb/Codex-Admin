@@ -1,0 +1,17 @@
+{
+  "name": "homelab-job-engine",
+  "version": "1.8.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "backup": "node backup.mjs backup",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "dependencies": {
+    "@openai/codex-sdk": "0.149.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {"id":"proxmox-api-admin","system_id":"proxmox","identity":"example-api-user","method":"api_token","scope":"administration","credential_ref":"00000000-0000-4000-8000-000000000001","last_tested_at":null,"test_result":"untested","revocation":"Remove the example token","notes":"Replace in the private site overlay"},
+    {"id":"home-assistant-api-admin","system_id":"home_assistant","identity":"example-service-account","method":"api_token","scope":"administration","credential_ref":"00000000-0000-4000-8000-000000000002","last_tested_at":null,"test_result":"untested","revocation":"Revoke the example token","notes":"Replace in the private site overlay"},
+    {"id":"reverse-proxy-ssh","system_id":"reverse_proxy","identity":"codex-admin","method":"ssh_key","scope":"administration","credential_ref":"00000000-0000-4000-8000-000000000004","last_tested_at":null,"test_result":"untested","revocation":"Remove the public key","notes":"Replace in the private site overlay"},
+    {"id":"unifi-api-admin","system_id":"unifi","identity":"example-api-user","method":"api_token","scope":"administration","credential_ref":"00000000-0000-4000-8000-000000000005","last_tested_at":null,"test_result":"untested","revocation":"Revoke the example token","notes":"Replace in the private site overlay"},
+    {"id":"unifi-console-ssh","system_id":"unifi","identity":"root","method":"ssh_key","scope":"read_only_logging","credential_ref":"00000000-0000-4000-8000-000000000006","last_tested_at":null,"test_result":"untested","revocation":"Remove the public key","notes":"Replace in the private site overlay"},
+    {"id":"public-relay-ssh","system_id":"public_relay_vps","identity":"codex-admin","method":"ssh_key","scope":"administration","credential_ref":"00000000-0000-4000-8000-000000000007","last_tested_at":null,"test_result":"untested","revocation":"Remove the public key","notes":"Replace in the private site overlay"},
+    {"id":"qnap-ssh-admin","system_id":"qnap_nas","identity":"codex-admin","method":"ssh_key","scope":"administration","credential_ref":"00000000-0000-4000-8000-000000000008","last_tested_at":null,"test_result":"untested","revocation":"Remove the public key","notes":"Replace in the private site overlay"},
+    {"id":"minecraft-amp-api-admin","system_id":"game_server","identity":"example-api-user","method":"api_token","scope":"administration","credential_ref":"00000000-0000-4000-8000-000000000009","last_tested_at":null,"test_result":"untested","revocation":"Revoke the example token","notes":"Replace in the private site overlay"}
+  ]
+}

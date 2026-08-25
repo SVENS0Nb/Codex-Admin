@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "overall_status",
+    "executive_summary",
+    "systems",
+    "findings",
+    "watch_items",
+    "notable_events",
+    "coverage_gaps"
+  ],
+  "properties": {
+    "overall_status": {
+      "type": "string",
+      "enum": ["ok", "warning", "critical", "unknown"]
+    },
+    "executive_summary": { "type": "string" },
+    "systems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["system_id", "status", "summary", "coverage_gaps"],
+        "properties": {
+          "system_id": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["ok", "warning", "critical", "unknown"]
+          },
+          "summary": { "type": "string" },
+          "coverage_gaps": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "system_id",
+          "severity",
+          "trend",
+          "promoted_from_watch",
+          "category",
+          "title",
+          "summary",
+          "significance_reason",
+          "evidence",
+          "first_seen",
+          "last_seen",
+          "occurrences",
+          "confidence",
+          "likely_impact",
+          "recommended_action",
+          "repair_requires_confirmation"
+        ],
+        "properties": {
+          "system_id": { "type": "string" },
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low"]
+          },
+          "trend": {
+            "type": "string",
+            "enum": ["new", "recurring", "persistent", "worsening", "unknown"]
+          },
+          "promoted_from_watch": { "type": "boolean" },
+          "category": { "type": "string" },
+          "title": { "type": "string" },
+          "summary": { "type": "string" },
+          "significance_reason": { "type": "string" },
+          "evidence": { "type": "string" },
+          "first_seen": { "type": ["string", "null"] },
+          "last_seen": { "type": ["string", "null"] },
+          "occurrences": { "type": "integer", "minimum": 1 },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "likely_impact": { "type": "string" },
+          "recommended_action": { "type": "string" },
+          "repair_requires_confirmation": { "type": "boolean" }
+        }
+      }
+    },
+    "watch_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "system_id",
+          "trend",
+          "category",
+          "title",
+          "summary",
+          "evidence",
+          "first_seen",
+          "last_seen",
+          "occurrences",
+          "confidence",
+          "escalation_condition"
+        ],
+        "properties": {
+          "system_id": { "type": "string" },
+          "trend": {
+            "type": "string",
+            "enum": ["new", "recurring", "persistent", "worsening", "unknown"]
+          },
+          "category": { "type": "string" },
+          "title": { "type": "string" },
+          "summary": { "type": "string" },
+          "evidence": { "type": "string" },
+          "first_seen": { "type": ["string", "null"] },
+          "last_seen": { "type": ["string", "null"] },
+          "occurrences": { "type": "integer", "minimum": 1 },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "escalation_condition": { "type": "string" }
+        }
+      }
+    },
+    "notable_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["system_id", "title", "summary"],
+        "properties": {
+          "system_id": { "type": "string" },
+          "title": { "type": "string" },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "coverage_gaps": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

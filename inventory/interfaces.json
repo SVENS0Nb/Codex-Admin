@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-01-01T00:00:00Z",
+  "interfaces": [
+    {"id":"proxmox:management","system_id":"proxmox","purpose":"management","protocol":"https","address":"hypervisor.example.invalid","port":8006,"confidence":1},
+    {"id":"home_assistant:management","system_id":"home_assistant","purpose":"management","protocol":"http","address":"192.0.2.20","port":8123,"confidence":1},
+    {"id":"reverse_proxy:management","system_id":"reverse_proxy","purpose":"management","protocol":"https","address":"proxy.example.invalid","port":443,"confidence":1},
+    {"id":"unifi:management","system_id":"unifi","purpose":"management","protocol":"https","address":"gateway.example.invalid","port":443,"confidence":1},
+    {"id":"public-relay-ssh","system_id":"public_relay_vps","purpose":"management","protocol":"ssh","address":"203.0.113.10","port":22,"confidence":1},
+    {"id":"qnap-ssh","system_id":"qnap_nas","purpose":"management","protocol":"ssh","address":"192.0.2.50","port":22,"username":"codex-admin","confidence":1},
+    {"id":"game-server-api","system_id":"game_server","purpose":"management","protocol":"https","address":"game.example.invalid","port":443,"confidence":1}
+  ]
+}

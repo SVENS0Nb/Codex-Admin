@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workflow_version": "2.1.0",
+  "schedule_local_time": "18:00",
+  "timezone": "Europe/Berlin",
+  "lookback_hours": 24,
+  "watch_window_days": 30,
+  "reporting_threshold": "significant_or_actionable",
+  "maximum_selected_events_per_source": 250,
+  "report_directory": "%LOCALAPPDATA%\\CodexAdmin\\homelab\\reports",
+  "systems": [
+    "proxmox",
+    "home_assistant",
+    "reverse_proxy",
+    "unifi",
+    "admin_workstation",
+    "public_relay_vps",
+    "qnap_nas",
+    "game_server"
+  ],
+  "collectors": [
+    { "id": "proxmox", "system_id": "proxmox", "function": "Invoke-ProxmoxCollection", "enabled": true, "required": true, "read_only": true, "timeout_seconds": 180, "adapter_version": 1 },
+    { "id": "home-assistant", "system_id": "home_assistant", "function": "Invoke-HomeAssistantCollection", "enabled": true, "required": true, "read_only": true, "timeout_seconds": 120, "adapter_version": 1 },
+    { "id": "home-assistant-availability", "system_id": "home_assistant", "function": "Invoke-HomeAssistantAvailabilityCollection", "enabled": true, "required": true, "read_only": true, "timeout_seconds": 60, "adapter_version": 1 },
+    { "id": "reverse-proxy", "system_id": "reverse_proxy", "function": "Invoke-ReverseProxyCollection", "enabled": true, "required": true, "read_only": true, "timeout_seconds": 180, "adapter_version": 1 },
+    { "id": "unifi", "system_id": "unifi", "function": "Invoke-UniFiCollection", "enabled": true, "required": true, "read_only": true, "timeout_seconds": 240, "adapter_version": 2 },
+    { "id": "windows", "system_id": "admin_workstation", "function": "Invoke-WindowsCollection", "enabled": true, "required": true, "read_only": true, "timeout_seconds": 180, "adapter_version": 1 },
+    { "id": "control-plane-status", "system_id": "admin_workstation", "function": "Invoke-ControlPlaneStatusCollection", "enabled": true, "required": true, "read_only": true, "timeout_seconds": 60, "adapter_version": 1 },
+    { "id": "public-relay-wireguard", "system_id": "public_relay_vps", "function": "Invoke-PublicRelayCollection", "enabled": true, "required": true, "read_only": true, "timeout_seconds": 180, "adapter_version": 1 },
+    { "id": "qnap", "system_id": "qnap_nas", "function": "Invoke-QnapCollection", "enabled": true, "required": false, "read_only": true, "timeout_seconds": 240, "adapter_version": 1 },
+    { "id": "minecraft", "system_id": "game_server", "function": "Invoke-MinecraftCollection", "enabled": true, "required": false, "read_only": true, "timeout_seconds": 240, "adapter_version": 1 }
+  ],
+  "mode": "read_only",
+  "repair_policy": "explicit_user_confirmation_required"
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstation": {
+    "hostname": "CODEX-ADMIN",
+    "ipv4": "192.0.2.10",
+    "prefix_length": 24,
+    "gateway": "192.0.2.1",
+    "platform": "Virtual machine",
+    "notes": "Synthetic example for a dedicated Codex admin VM",
+    "ssh_identity": "%USERPROFILE%\\.ssh\\codex_admin_ed25519",
+    "ssh_public_fingerprint": null
+  },
+  "services": {
+    "proxmox": {
+      "enabled": false,
+      "base_url": "https://hypervisor.example.invalid",
+      "tcp_port": 8006,
+      "credential_ref": "00000000-0000-4000-8000-000000000001",
+      "verify_tls": true,
+      "certificate_sha256": null
+    },
+    "home_assistant": {
+      "enabled": false,
+      "base_url": "http://192.0.2.20:8123",
+      "tcp_port": 8123,
+      "credential_ref": "00000000-0000-4000-8000-000000000002",
+      "proxmox_node": "proxmox",
+      "vmid": 201,
+      "ssh_url": "ssh://192.0.2.20:22",
+      "ssh_user": "root",
+      "ssh_credential_ref": "00000000-0000-4000-8000-000000000003",
+      "verify_tls": false
+    },
+    "reverse_proxy": {
+      "enabled": false,
+      "product": "Reverse proxy",
+      "base_url": "https://proxy.example.invalid",
+      "tcp_port": 443,
+      "credential_ref": "00000000-0000-4000-8000-000000000004",
+      "ssh_url": "ssh://192.0.2.30:22",
+      "ssh_user": "codex-admin",
+      "verify_tls": true,
+      "certificate_sha256": null
+    },
+    "unifi": {
+      "enabled": false,
+      "controller_type": "Network controller or gateway",
+      "base_url": "https://gateway.example.invalid",
+      "tcp_port": 443,
+      "credential_ref": "00000000-0000-4000-8000-000000000005",
+      "ssh_url": "ssh://192.0.2.1:22",
+      "ssh_user": "root",
+      "ssh_credential_ref": "00000000-0000-4000-8000-000000000006",
+      "verify_tls": true,
+      "detected_name": "Example Site",
+      "certificate_sha256": null
+    }
+  }
+}
